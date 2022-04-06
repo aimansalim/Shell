@@ -27,20 +27,51 @@ esac
 case $2 in
 *[!0-9]*)   echo Errore: $2 non è un parametro numerico
             exit 4 ;;
-*)  if test -eq 0 #Controlla che il parametro sia uguale a 0
+*)  if test -eq 0 #Se numero inserito è 0
     then 
     echo Errore: $2 è uguale a zero, deve essere maggiore di 0
     exit 5
     else $2 Corretto!
     fi 
     ;;
+esac
 
-#Cosa da non scordarsi
+#ATTENZIONE
 PATH=`pwd`: $PATH
 export PATH
-
 > /tmp/tmp$$ #Creiamo file temporaneo che passeremo poi come ultimo parametro al file comandi ricorsivo
-
 #Invochiamo il file comando ricorsivo
 FCR.sh $1 $2 #Per tutti i parametri (non solo il loro numero ma proprio runna il FCR.sh su quei para) 
 
+
+#Dopo aver esplorato tutta la gerarchia
+#Chiedo un numero maggiore di zero e minore di $2 (quello inserito)
+
+
+#Dichiaro
+PARAMETRI=
+
+#leggo le righe del file con un for
+for i in `cat /tmp/tmp$$` 
+do
+    echo Inserire numero maggiore di zero e minore o uguale di $2
+    read risposta
+
+    case $risposta in
+
+    *[!0-9]*)
+        echo Errore: $risposta non è un numero!
+        exit 6
+    ;;
+
+    *) #Se il numero inserito è maggiore di 0 and minore o uguale al numero inserito
+        if test $risposta -gt 0 -a $risposta -le $2 #gt -> Greater Than > Maggiore
+        then
+        echo Corretto! Il parametro è giusto
+        PARAMETRI="$PARAMETRI $i $risposta" #DA CAPIRE
+        else
+        echo Errore: non è minore o uguale di $2 oppure è zero
+        fi
+    ;;
+    esac
+done
