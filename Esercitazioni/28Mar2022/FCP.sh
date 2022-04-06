@@ -2,7 +2,8 @@
 
 #Controllo che il primo sia un nome assoluto
 case $# in
-0|1) echo Errore: $# sono pochi parametri;;
+0|1) echo Errore: $# sono pochi parametri
+exit 7;;
 2)  echo Corretto! $# è il numero corretto di parametri ;;
 *)  echo Errore: $# sono troppi parametri
     exit 1 ;;
@@ -27,11 +28,11 @@ esac
 case $2 in
 *[!0-9]*)   echo Errore: $2 non è un parametro numerico
             exit 4 ;;
-*)  if test -eq 0 #Se numero inserito è 0
+*)  if test $2 -eq 0 #Se numero inserito è 0
     then 
     echo Errore: $2 è uguale a zero, deve essere maggiore di 0
     exit 5
-    else $2 Corretto!
+    else echo $2 è un numero corretto!
     fi 
     ;;
 esac
@@ -39,7 +40,7 @@ esac
 #ATTENZIONE
 PATH=`pwd`: $PATH
 export PATH
-> /tmp/tmp$$ #Creiamo file temporaneo che passeremo poi come ultimo parametro al file comandi ricorsivo
+> /tmp/provafile #Creiamo file temporaneo che passeremo poi come ultimo parametro al file comandi ricorsivo
 #Invochiamo il file comando ricorsivo
 FCR.sh $1 $2 #Per tutti i parametri (non solo il loro numero ma proprio runna il FCR.sh su quei para) 
 
@@ -52,7 +53,7 @@ FCR.sh $1 $2 #Per tutti i parametri (non solo il loro numero ma proprio runna il
 PARAMETRI=
 
 #leggo le righe del file con un for
-for i in `cat /tmp/tmp$$` 
+for i in `cat /tmp/provafile` 
 do
     echo Inserire numero maggiore di zero e minore o uguale di $2
     read risposta
@@ -75,3 +76,6 @@ do
     ;;
     esac
 done
+
+#rimuovo il file tmp
+rm /tmp/nomifile
