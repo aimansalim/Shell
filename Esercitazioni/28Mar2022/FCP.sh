@@ -2,8 +2,9 @@
 
 #Controllo che il primo sia un nome assoluto
 case $# in
+0|1) echo Errore: $# sono pochi parametri;;
 2)  echo Corretto! $# è il numero corretto di parametri ;;
-*)  echo Errore: $# non è il numero corretto di parametri
+*)  echo Errore: $# sono troppi parametri
     exit 1 ;;
 esac
 
@@ -38,5 +39,8 @@ case $2 in
 PATH=`pwd`: $PATH
 export PATH
 
+> /tmp/tmp$$ #Creiamo file temporaneo che passeremo poi come ultimo parametro al file comandi ricorsivo
+
 #Invochiamo il file comando ricorsivo
-FCR.sh $* #Per tutti i parametri (non solo il loro numero ma proprio runna il FCR.sh su quei para) 
+FCR.sh $1 $2 #Per tutti i parametri (non solo il loro numero ma proprio runna il FCR.sh su quei para) 
+
